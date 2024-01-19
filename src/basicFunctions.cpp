@@ -1,5 +1,10 @@
 #include <Arduino.h>
 #include "basicFunctions.h"
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+Adafruit_SSD1306 display(128,32,&Wire,0x3c);
 
 double calibratieFactors[] = {1, 1, 1, 1}; // calibratiefactoren tussen 0 en 1
 
@@ -22,6 +27,13 @@ void setupBasicFunctions()
 	pinMode(switchPin, INPUT_PULLUP);
 
 	Serial.begin(115200);
+
+	if (!display.begin(0x3c, 0x3c)){
+		Serial.println(F("SSD1306 allocation failed"));
+		for (;;);
+	display.setTextSize(4);
+	display.setTextColor(SSD1306_WHITE);
+	}
 }
 
 bool readFrontIRSensor()
@@ -173,4 +185,22 @@ void driveMotors(double left, double right)
 		Serial.print(pwmValue);
 #endif
 	}
+}
+void displayDrive(){
+display.clearDisplay();
+display.setCursor(0,0);
+display.print("Drive");
+display.display();
+}
+void displayPause(){
+display.clearDisplay();
+display.setCursor(0,0);
+display.print("Pause");
+display.display();
+}
+void displayStop(){
+display.clearDisplay();
+display.setCursor(0,0);
+display.print("Stop");
+display.display();
 }

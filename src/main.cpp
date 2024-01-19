@@ -14,6 +14,7 @@ bool checkOvershoot();
 void handleOvershoot();
 void (*resetFunc)(void) = 0;
 
+
 void setup()
 {
 	setupBasicFunctions();
@@ -50,6 +51,8 @@ void loop()
 	Serial.print(pid);
 #endif
 	driveMotors(motorInput[0], motorInput[1]);
+	displayDrive();
+	
 }
 
 int calculateWeightedArraySum(const bool array[], int arrSize)
@@ -171,6 +174,7 @@ bool handlePossibleStopPauseSign()
 #endif
 	driveMotors(0, 0);
 	while (digitalRead(switchPin) == HIGH)
+	displayStop();
 	{
 #if DEBUG >= 1
 		Serial.print("\nRobot reached stop sign, toggle switchpin to continue again");
@@ -182,6 +186,7 @@ bool handlePossibleStopPauseSign()
 
 void handlePauseSign()
 {
+	displayPause();
 	driveMotors(0, 0);
 	delay(5000);
 
